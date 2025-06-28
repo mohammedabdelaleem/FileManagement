@@ -1,4 +1,6 @@
 ﻿
+using FileManagement.Api.Services;
+
 namespace FileManagement.Api;
 
 public static class DependencyInjection
@@ -9,6 +11,11 @@ public static class DependencyInjection
 		services.AddOpenApi();
 
 		services.AddDatabaseConfig (configuration);
+
+
+		services.AddScoped<IFileService, FileService>();
+
+
 
 		return services;
 	}

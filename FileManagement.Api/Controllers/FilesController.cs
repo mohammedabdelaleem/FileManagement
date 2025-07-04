@@ -1,4 +1,5 @@
 ﻿using FileManagement.Api.Services;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FileManagement.Api.Controllers;
@@ -18,4 +19,12 @@ public class FilesController(
 		return Created();
 	}
 
+
+	[HttpPost("upload-many")]
+	public async Task<IActionResult> UploadMany([FromForm] UploadManyFilesRequest request, CancellationToken cancellationToken = default)
+	{
+		var filesIds = await _fileService.UploadManyAsync(request.Files, cancellationToken);
+
+		return Ok(filesIds);	
+	}
 }

@@ -1,4 +1,7 @@
-﻿namespace FileManagement.Api.Services;
+﻿
+using FileManagement.Api.Entity;
+
+namespace FileManagement.Api.Services;
 
 public class FileService(
 	IWebHostEnvironment webHostEnvironment,
@@ -11,9 +14,39 @@ public class FileService(
 	public async Task<Guid> UploadAsync(IFormFile file, CancellationToken cancellationToken = default)
 	{
 
+		var uploadedFile = await SaveFile(file, cancellationToken);
+
+		// save at db
+		await _context.AddAsync(uploadedFile, cancellationToken);
+		await _context.SaveChangesAsync(cancellationToken);
+
+		return uploadedFile.Id;
+	}
+
+	public async Task<IEnumerable<Guid>> UploadManyAsync(IFormFileCollection files, CancellationToken cancellationToken = default)
+	{
+		List<UploadedFile> uploadedFiles = [];
+
+		foreach (var file in files)
+		{
+			var uploadFile = await SaveFile(file, cancellationToken);	
+			uploadedFiles.Add(uploadFile);
+		}
+
+		// save at db
+		await _context.AddRangeAsync(uploadedFiles, cancellationToken);
+		await _context.SaveChangesAsync(cancellationToken);
+
+		return uploadedFiles.Select(u=>u.Id).ToList();
+
+	}
+
+	private async Task<UploadedFile> SaveFile(IFormFile file, CancellationToken cancellationToken)
+	{
 		// fake filename and extension using Path.GetRandomFileName(); 
 		var randomFileName = Path.GetRandomFileName();
 
+		// prepare domain model
 		var uploadedFile = new UploadedFile
 		{
 			FileName = file.FileName,
@@ -25,18 +58,12 @@ public class FileService(
 		// where you need to store at the server
 		var path = Path.Combine(uploadsPath, randomFileName);
 
-		// now we have the file and its path 
+		// now we have the file && its path 
 
 		// reading or streaming to copy it into the server
 		using var stream = File.Create(path);
 		await file.CopyToAsync(stream, cancellationToken);
 
-		// save at db
-		await _context.AddAsync(uploadedFile, cancellationToken);
-		await _context.SaveChangesAsync(cancellationToken);
-
-		return uploadedFile.Id;
+		return uploadedFile;
 	}
-
-
 }

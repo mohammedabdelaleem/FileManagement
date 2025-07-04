@@ -9,6 +9,7 @@ public class FileService(
 {
 
 	private readonly string uploadsPath = $"{webHostEnvironment.WebRootPath}/uploads";
+	private readonly string imagesPath = $"{webHostEnvironment.WebRootPath}/images";
 	private readonly AppDbContext _context = context;
 
 	public async Task<Guid> UploadAsync(IFormFile file, CancellationToken cancellationToken = default)
@@ -21,6 +22,18 @@ public class FileService(
 		await _context.SaveChangesAsync(cancellationToken);
 
 		return uploadedFile.Id;
+	}
+
+	public async Task UploadImageAsync(IFormFile image, CancellationToken cancellationToken = default)
+	{
+
+		// where you need to store at the server
+		var path = Path.Combine(imagesPath, image.FileName);
+
+
+		// reading or streaming to copy it into the server
+		using var stream = File.Create(path);
+		await image.CopyToAsync(stream, cancellationToken);
 	}
 
 	public async Task<IEnumerable<Guid>> UploadManyAsync(IFormFileCollection files, CancellationToken cancellationToken = default)

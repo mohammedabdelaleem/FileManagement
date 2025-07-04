@@ -17,7 +17,7 @@ public class UploadManyFilesRequestValidator : AbstractValidator<UploadManyFiles
 			.SetValidator(new FileSizeValidator());	
 
 		RuleForEach(x => x.Files)
-			.SetValidator(new AllowedTypeContentValidator());
+			.SetValidator(new BlockedSignaturesValidator());
 
 	}
 }

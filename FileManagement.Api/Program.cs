@@ -17,4 +17,9 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+
+//app.UseStaticFiles();
+
+// more enhanced .net9
+app.MapStaticAssets();
 app.Run();

@@ -3,9 +3,15 @@
 public sealed class UploadedFile
 {
 	public Guid Id { get; set; } = Guid.CreateVersion7();
-	public string FileName { get; set; } = string.Empty;
-	public string StoredFileName { get; set; } = string.Empty;
-	public string ContentType { get; set; } = string.Empty;
+
+	// the original filename
+	public string FileName { get; set; } = string.Empty; // my-image.png
+
+	// the fake file name , saved at server storage		
+	public string StoredFileName { get; set; } = string.Empty;// koXsFx.Kox
+
+	public string ContentType { get; set; } = string.Empty; // we deal with files we need to know what its type?
+
 	public string FileExtension { get; set; } = string.Empty;
 
 }

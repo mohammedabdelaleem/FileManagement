@@ -3,5 +3,5 @@ namespace FileManagement.Api.Services;
 
 public interface IFileService
 {
-	Task<Guid> UploadAsync(IFormFile fileRequest, CancellationToken cancellationToken = default);
+	Task<Guid> UploadAsync(IFormFile file , CancellationToken cancellationToken=default);
 }

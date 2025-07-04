@@ -15,18 +15,9 @@ public class FilesController(
 	public async Task<IActionResult> Upload([FromForm] UploadedFileRequest request , CancellationToken cancellationToken = default)
 	{
 		var fileId = await _fileService.UploadAsync(request.File, cancellationToken);
-
 		return Created();
 	}
 
-
-	[HttpPost("test")]
-	public async Task<IActionResult> test([FromBody] TestRecordRequest request, CancellationToken cancellationToken = default)
-	{
-		//var fileId = await _fileService.UploadAsync(request.File, cancellationToken);
-
-		return Ok(request);
-	}
 
 	[HttpPost("upload-many")]
 	public async Task<IActionResult> UploadMany([FromForm] UploadManyFilesRequest request, CancellationToken cancellationToken = default)

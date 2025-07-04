@@ -1,5 +1,6 @@
 ﻿
 using FileManagement.Api.Services;
+using FluentValidation.AspNetCore;
 
 namespace FileManagement.Api;
 
@@ -10,11 +11,11 @@ public static class DependencyInjection
 		services.AddControllers();
 		services.AddOpenApi();
 
-		services.AddDatabaseConfig (configuration);
+		services.AddFluentValidationConfig()
+			.AddDatabaseConfig(configuration);
 
 
 		services.AddScoped<IFileService, FileService>();
-
 
 
 		return services;
@@ -31,6 +32,16 @@ public static class DependencyInjection
 		});
 
 		return services;	
+	}
+
+	private static IServiceCollection AddFluentValidationConfig(this IServiceCollection services)
+	{
+		services
+			.AddFluentValidationAutoValidation()
+			.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+
+		return services;
 	}
 
 }

@@ -6,3 +6,5 @@ global using FileManagement.Api.Persistence;
 global using FileManagement.Api.Contract;
 global using FluentValidation;
 global using FileManagement.Api.Settings;
+global using FileManagement.Api.Abstractions.Consts;
+global using FileManagement.Api.Contract.Common;

@@ -1,0 +1,8 @@
+﻿namespace FileManagement.Api.Abstractions.Consts;
+
+public static class RegexPatterns
+{
+	// Allows alphanumerics, underscore, dash, dot, and space
+	// Disallows: / \ : * ? " < > | and control characters
+	public const string AllowedFileNameConvention = @"^(?!^(CON|PRN|AUX|NUL|COM\d|LPT\d)(\..*)?$)[^<>:\""/\\|?*\x00-\x1F]+$";
+}

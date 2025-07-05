@@ -36,6 +36,14 @@ public class FilesController(
 		return Created();
 	}
 
+	[HttpPost("upload-video")]
+	public async Task<IActionResult> UploadVideo([FromForm] UploadVideoRequest request, CancellationToken cancellationToken = default)
+	{
+		var videoId= await _fileService.UploadVideoAsync(request.Video, cancellationToken);
+
+		return CreatedAtAction(nameof(Stream) ,new {id = videoId} , null);
+	}
+
 	[HttpGet("download/{id}")]
 	public async Task<IActionResult> Download([FromRoute] Guid id, CancellationToken cancellationToken = default)
 	{

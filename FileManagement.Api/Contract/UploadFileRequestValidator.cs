@@ -10,7 +10,7 @@ public class UploadFileRequestValidator : AbstractValidator<UploadedFileRequest>
 
 
 		RuleFor(x=>x.File)
-			//.SetValidator(new FileSizeValidator())
+			.SetValidator(new FileSizeValidator())
 			.SetValidator(new BlockedSignaturesValidator());
 	}
 }

@@ -8,7 +8,7 @@ public class AllowdFileNameValidator : AbstractValidator<string>
 		RuleFor(x => x)
 				.NotEmpty()
 				.Matches(RegexPatterns.AllowedFileNameConvention)
-				.WithMessage("Filename contains invalid characters.");
+				.WithMessage("Invalid file name.");
 
 	}
 }

@@ -10,6 +10,8 @@ public class FileService(
 
 	private readonly string uploadsPath = $"{webHostEnvironment.WebRootPath}/uploads";
 	private readonly string imagesPath = $"{webHostEnvironment.WebRootPath}/images";
+	private readonly string videosPath = $"{webHostEnvironment.WebRootPath}/videos";
+
 	private readonly AppDbContext _context = context;
 
 	
@@ -76,6 +78,18 @@ public class FileService(
 
 	}
 
+	public async Task<Guid> UploadVideoAsync(IFormFile video, CancellationToken cancellationToken = default)
+	{
+
+		var uploadedVideo = await SaveFile(video, cancellationToken);
+
+		// save at db
+		await _context.AddAsync(uploadedVideo, cancellationToken);
+		await _context.SaveChangesAsync(cancellationToken);
+
+		return uploadedVideo.Id;
+	}
+
 	public async Task<(FileStream? stream, string contentType, string fileName)> StreamAsync(Guid fileId, CancellationToken cancellationToken = default)
 	{
 		if (await _context.Files.FindAsync(fileId) is not { } file)
@@ -91,6 +105,7 @@ public class FileService(
 		return (fileStream, file.ContentType, file.FileName);
 	}
 
+	
 
 
 	private async Task<UploadedFile> SaveFile(IFormFile file, CancellationToken cancellationToken)
@@ -119,5 +134,5 @@ public class FileService(
 		return uploadedFile;
 	}
 
-	
+
 }

@@ -35,4 +35,12 @@ public class FilesController(
 
 		return Created();
 	}
+
+	[HttpGet("download/{id}")]
+	public async Task<IActionResult> Download([FromRoute] Guid id, CancellationToken cancellationToken = default)
+	{
+		var response =  await _fileService.DownloadAsync(id, cancellationToken);
+
+		return response is not null ? File(response.FileContent, response.ContentType,response.FileName): NotFound();
+	}
 }

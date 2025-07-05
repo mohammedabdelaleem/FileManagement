@@ -12,6 +12,8 @@ public class FileService(
 	private readonly string imagesPath = $"{webHostEnvironment.WebRootPath}/images";
 	private readonly AppDbContext _context = context;
 
+	
+
 	public async Task<Guid> UploadAsync(IFormFile file, CancellationToken cancellationToken = default)
 	{
 
@@ -53,6 +55,29 @@ public class FileService(
 		return uploadedFiles.Select(u=>u.Id).ToList();
 
 	}
+
+	public async Task<FileResponse?> DownloadAsync(Guid fileId, CancellationToken cancellationToken = default)
+	{
+		if (await _context.Files.FindAsync(fileId) is not { } file)
+			return null;
+
+		// if the file is found at db 
+		// return the file from server
+		// don't forget : file stored at server using fake filename
+		var path = Path.Combine(uploadsPath, file.StoredFileName); 
+
+		MemoryStream memoryStream = new ();
+		using FileStream fileStream = new FileStream(path, FileMode.Open);
+		fileStream.CopyTo(memoryStream);
+		memoryStream.Position = 0;
+
+		return new FileResponse(memoryStream.ToArray() , file.ContentType, file.FileName);
+
+
+	}
+
+
+
 
 	private async Task<UploadedFile> SaveFile(IFormFile file, CancellationToken cancellationToken)
 	{

@@ -8,6 +8,7 @@ public interface IFileService
 
 	Task<IEnumerable<Guid>> UploadManyAsync(IFormFileCollection files, CancellationToken cancellationToken = default);
 
+	Task<FileResponse?> DownloadAsync(Guid fileId, CancellationToken cancellationToken = default);
 
 
 }

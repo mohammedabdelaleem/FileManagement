@@ -15,7 +15,7 @@ public class FilesController(
 	public async Task<IActionResult> Upload([FromForm] UploadedFileRequest request, CancellationToken cancellationToken = default)
 	{
 		var fileId = await _fileService.UploadAsync(request.File, cancellationToken);
-		return Created();
+		return CreatedAtAction(nameof(Download), new { id = fileId }, null);
 	}
 
 

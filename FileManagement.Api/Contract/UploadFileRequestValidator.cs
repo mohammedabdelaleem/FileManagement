@@ -1,7 +1,4 @@
-﻿using FileManagement.Api.Abstractions.Consts;
-using FileManagement.Api.Contract.Common;
-
-namespace FileManagement.Api.Contract;
+﻿namespace FileManagement.Api.Contract;
 
 public class UploadFileRequestValidator : AbstractValidator<UploadedFileRequest>
 {
@@ -13,11 +10,8 @@ public class UploadFileRequestValidator : AbstractValidator<UploadedFileRequest>
 
 
 		RuleFor(x=>x.File)
-			.SetValidator(new FileSizeValidator());
-
-
-		RuleFor(x => x.File)
-				.SetValidator(new BlockedSignaturesValidator());
+			//.SetValidator(new FileSizeValidator())
+			.SetValidator(new BlockedSignaturesValidator());
 	}
 }
 	

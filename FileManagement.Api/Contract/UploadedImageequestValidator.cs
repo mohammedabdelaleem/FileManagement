@@ -8,13 +8,8 @@ public class UploadedImageequestValidator : AbstractValidator<UploadedImageReque
 			.SetValidator(new AllowdFileNameValidator());
 
 		RuleFor(x => x.Image)
-			.SetValidator(new FileSizeValidator());
-
-		RuleFor(x => x.Image)
-			.SetValidator(new BlockedSignaturesValidator());
-		
-
-		RuleFor(x => x.Image)
+			.SetValidator(new FileSizeValidator())
+			.SetValidator(new BlockedSignaturesValidator())
 			.Must((request, context) =>
 			{
 				var extension = Path.GetExtension(request.Image.FileName.ToLower());

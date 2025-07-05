@@ -7,17 +7,14 @@ public class UploadManyFilesRequestValidator : AbstractValidator<UploadManyFiles
 	{
 
 		RuleForEach(x => x.Files)
+			.SetValidator(new FileSizeValidator())
+			.SetValidator(new BlockedSignaturesValidator())
 			.ChildRules(file =>
 			{
 				file.RuleFor(f => f.FileName)
 				.SetValidator(new AllowdFileNameValidator());
 			});
 
-		RuleForEach(x => x.Files)
-			.SetValidator(new FileSizeValidator());	
-
-		RuleForEach(x => x.Files)
-			.SetValidator(new BlockedSignaturesValidator());
 
 	}
 }

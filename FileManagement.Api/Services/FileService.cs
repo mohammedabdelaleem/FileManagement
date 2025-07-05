@@ -76,6 +76,20 @@ public class FileService(
 
 	}
 
+	public async Task<(FileStream? stream, string contentType, string fileName)> StreamAsync(Guid fileId, CancellationToken cancellationToken = default)
+	{
+		if (await _context.Files.FindAsync(fileId) is not { } file)
+			return (null, string.Empty, string.Empty);
+
+		// if the file is found at db 
+		// return the file from server
+		// don't forget : file stored at server using fake filename
+		var path = Path.Combine(uploadsPath, file.StoredFileName);
+
+		var fileStream = File.OpenRead(path);
+
+		return (fileStream, file.ContentType, file.FileName);
+	}
 
 
 
@@ -104,4 +118,6 @@ public class FileService(
 
 		return uploadedFile;
 	}
+
+	
 }
